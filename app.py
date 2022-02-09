@@ -53,6 +53,19 @@ def change_post():
         return Response("Something went wrong editing a candy!", mimetype="application/json", status=400)
 
 
+@app.delete('/candy')
+def delete_post():
+    post_title = None
+    try:
+        post_title = request.json['title']
+        if(dbh.delete_post(post_title)):
+            return Response("You've successfully deleted a candy post!", mimetype="plain/text", status=200)
+        else:
+            return Response("Something went wrong deleting a candy", mimetype="plain/text", status=400)
+    except:
+        return Response("Something went wrong deleting a candy!", mimetype="application/json", status=400)
+
+
 if(len(sys.argv) > 1):
     mode = sys.argv[1]
 else:

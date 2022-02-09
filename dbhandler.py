@@ -74,3 +74,17 @@ def change_post(title, new_title, new_content):
     conn.commit()
     db_disconnect(conn, cursor)
     return True
+
+
+def delete_post(title):
+    conn, cursor = db_connect()
+    try:
+        cursor.execute(
+            "DELETE FROM candy WHERE title = ?", [title, ])
+    except db.OperationalError:
+        print('Something is wrong with the db!')
+    except db.ProgrammingError:
+        print('Error running DB query')
+    conn.commit()
+    db_disconnect(conn, cursor)
+    return True
