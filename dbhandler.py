@@ -59,3 +59,18 @@ def add_post(title, content):
     conn.commit()
     db_disconnect(conn, cursor)
     return True
+
+
+def change_post(title, new_title, new_content):
+    conn, cursor = db_connect()
+    try:
+        cursor.execute(
+            "UPDATE candy SET title = ?, content = ? WHERE title = ?", [new_title, new_content, title])
+    except db.OperationalError:
+        print('Something is wrong with the db!')
+        return False
+    except db.ProgrammingError:
+        print('Error running DB query')
+    conn.commit()
+    db_disconnect(conn, cursor)
+    return True

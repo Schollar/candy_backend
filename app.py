@@ -36,6 +36,23 @@ def add_post():
         return Response("Something went wrong adding a candy!", mimetype="application/json", status=400)
 
 
+@app.patch('/candy')
+def change_post():
+    post_title = None
+    post_new_title = None
+    post_new_content = None
+    try:
+        post_title = request.json['title']
+        post_new_title = request.json['new_title']
+        post_new_content = request.json['content']
+        if(dbh.change_post(post_title, post_new_title, post_new_content)):
+            return Response("You've successfully changed a candy post!", mimetype="plain/text", status=200)
+        else:
+            return Response("Something went wrong editing a candy", mimetype="plain/text", status=400)
+    except:
+        return Response("Something went wrong editing a candy!", mimetype="application/json", status=400)
+
+
 if(len(sys.argv) > 1):
     mode = sys.argv[1]
 else:
