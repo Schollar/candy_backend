@@ -12,13 +12,28 @@ def get_posts():
     posts_json = None
     try:
         post_list = dbh.get_posts()
-        post_json = json.dumps(post_list, default=str)
+        posts_json = json.dumps(post_list, default=str)
     except:
-        return Response("Something went wrong getting employee from the DB!", mimetype="application/json", status=400)
+        return Response("Something went wrong getting the list of candy from the DB!", mimetype="application/json", status=400)
     if(post_list):
-        return Response(post_json, mimetype="application/json", status=200)
+        return Response(posts_json, mimetype="application/json", status=200)
     else:
-        return Response("Something went wrong getting employee from the DB!", mimetype="application/json", status=400)
+        return Response("Something went wrong getting the list of candy from the DB!", mimetype="application/json", status=400)
+
+
+@app.post('/candy')
+def add_post():
+    post_title = None
+    post_content = None
+    try:
+        post_title = request.json['title']
+        post_content = request.json['content']
+        if(dbh.add_post(post_title, post_content)):
+            return Response("You've successfully added a candy post!", mimetype="plain/text", status=200)
+        else:
+            return Response("Something went wrong adding a candy", mimetype="plain/text", status=400)
+    except:
+        return Response("Something went wrong adding a candy!", mimetype="application/json", status=400)
 
 
 if(len(sys.argv) > 1):
