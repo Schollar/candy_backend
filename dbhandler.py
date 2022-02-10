@@ -26,7 +26,8 @@ def db_disconnect(conn, cursor):
         conn.close()
     except:
         print('Error closing connection')
-# Get animal function gets the animal name and description from animals table in DB
+
+# Get posts function gets the posts from the DB and returns them.
 
 
 def get_posts():
@@ -46,6 +47,8 @@ def get_posts():
 
     return posts
 
+# Add posts function takes in title and content args and inserts a new post into the DB, returns true.
+
 
 def add_post(title, content):
     conn, cursor = db_connect()
@@ -55,10 +58,13 @@ def add_post(title, content):
     except db.OperationalError:
         print('Something is wrong with the db!')
     except db.ProgrammingError:
+
         print('Error running DB query')
     conn.commit()
     db_disconnect(conn, cursor)
     return True
+
+# Change post takes in 3 args which are then used to change the title and content of a post
 
 
 def change_post(title, new_title, new_content):
@@ -66,6 +72,8 @@ def change_post(title, new_title, new_content):
     try:
         cursor.execute(
             "UPDATE candy SET title = ?, content = ? WHERE title = ?", [new_title, new_content, title])
+        if(cursor.rowcount < 1):
+            return False
     except db.OperationalError:
         print('Something is wrong with the db!')
         return False
@@ -74,6 +82,8 @@ def change_post(title, new_title, new_content):
     conn.commit()
     db_disconnect(conn, cursor)
     return True
+
+# Delete post takes in title of post and deletes it from the DB
 
 
 def delete_post(title):

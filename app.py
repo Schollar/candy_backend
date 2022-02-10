@@ -5,6 +5,8 @@ import dbhandler as dbh
 import sys
 app = Flask(__name__)
 
+# Function that takes in no user input, runs the dbhandler get posts which gets all the posts from the db and returns them in the response
+
 
 @app.get('/candy')
 def get_posts():
@@ -20,6 +22,8 @@ def get_posts():
     else:
         return Response("Something went wrong getting the list of candy from the DB!", mimetype="application/json", status=400)
 
+# Function that gets title and content as user input and sends it off to dbhandler add post function to add a post to the db.
+
 
 @app.post('/candy')
 def add_post():
@@ -34,6 +38,8 @@ def add_post():
             return Response("Something went wrong adding a candy", mimetype="plain/text", status=400)
     except:
         return Response("Something went wrong adding a candy!", mimetype="application/json", status=400)
+
+# Function that takes in user input and sends it off to dbhandler change post to change the title and content of a post.
 
 
 @app.patch('/candy')
@@ -52,6 +58,8 @@ def change_post():
     except:
         return Response("Something went wrong editing a candy!", mimetype="application/json", status=400)
 
+# Function that takes in a post title and sends it off to dbhandler to be deleted from the DB
+
 
 @app.delete('/candy')
 def delete_post():
@@ -66,12 +74,13 @@ def delete_post():
         return Response("Something went wrong deleting a candy!", mimetype="application/json", status=400)
 
 
+# Checking to see if a mode was passed to the script
 if(len(sys.argv) > 1):
     mode = sys.argv[1]
 else:
     print('You must pass a mode to run this script. Either testing or production')
     exit()
-
+# Depending on what mode is passed, we check and run the appropriate code.
 if(mode == "testing"):
     print('Running in testing mode!')
     from flask_cors import CORS
